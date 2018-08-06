@@ -3,6 +3,8 @@
 Run the code **only for Cars196 dataset**. Good reference for green hand in metric learning.
 Pure bash & c++ code for training and extract features. Feel free to DIY your py script to build your test workflow.
 
+> *Note: This code is just for green hand to experience the basic deep metric learning workflow! More details should finally refer to the [original repo](https://github.com/PkuRainBow/Hard-Aware-Deeply-Cascaded-Embedding_release).*
+
 ---
 
 # Hard-Aware-Deeply-Cascaded-Embedding [ICCV2017 (spotlight)]
