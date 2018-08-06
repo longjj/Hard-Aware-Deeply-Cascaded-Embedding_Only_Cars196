@@ -74,10 +74,13 @@ If you find this work useful in your research, please consider citing :
 ## Usage
 
 **Use new tool `extract_features2file`**: 
-Put `extract_features2file.cpp` to caffe `src/caffe/tools` dir and build for a new tool.
+
+Put `extract_features2file.cpp` to caffe `src/caffe/tools` dir and build a new tool.
 
 **Process Data**: (you should in the folder /src_code/):
-(just generate for `cars196`)
+
+(just generate files for `cars196`)
+
 ```
    python hdc_process.py
 ```
