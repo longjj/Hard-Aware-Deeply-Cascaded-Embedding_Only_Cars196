@@ -1,27 +1,11 @@
-import sample_stanford_products
 import sample_cars196
-import sample_cub200
-import sample_deepfashion
-import sample_vehicleid
 import util
 
 import sys, getopt
 
 def main(argv):
     dataset = ''
-    try:
-        opts, args = getopt.getopt(argv, "hd:",["dataset="])
-    except getopt.GetoptError:
-        print 'Error : hdc_process.py -d <dataset>'
-        print '    or: hdc_process.py --dataset=<dataset>'
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == "-h":
-            print 'hdc_process.py -d <dataset>'
-            print 'or: hdc_process.py --dataset=<dataset>'
-            sys.exit()
-        elif opt in ("-d", "--dataset"):
-            dataset = arg
+    dataset = argv
 
     if dataset == 'stanford_products':
         home_folder = '../data/stanford_products/'
@@ -99,4 +83,5 @@ def main(argv):
         print 'Please choose the dataset from [stanford_products, cars196, cub200, deepfashion, vehicleid]'
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    # main(sys.argv[1:])
+    main('cars196')

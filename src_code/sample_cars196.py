@@ -1,6 +1,4 @@
 import random
-import scipy.io as sio
-from PIL import Image
 
 def preprocess_data(src_file, dst_file, choice):
     print choice, 'preprocess ...'
@@ -11,6 +9,7 @@ def preprocess_data(src_file, dst_file, choice):
         file_w = open(dst_file, 'w')
         lines = [line.rstrip('\n') for line in open(src_file)]
     if choice == 'train':
+        # get train data
         for i in range(0, 8054):
             cur_str = lines[i]
             split_str = cur_str.split(' ')
@@ -19,6 +18,7 @@ def preprocess_data(src_file, dst_file, choice):
             file_w.write(cur_line)
         file_w.close()
     else:
+        # get test data
         for i in range(8054, 16185):
             cur_str = lines[i]
             split_str = cur_str.split(' ')
@@ -48,33 +48,33 @@ def sample_data(src_file, dst_file, class_cnt, batch_cnt):
                 file_w.write(cur_line)
     file_w.close()
 
-def crop_images(src_file, input_dir, output_dir, crop_file):
-    cars_ = sio.loadmat(crop_file)
-    anno_ = cars_['annotations']
-    lines_image = [line.rstrip('\n') for line in open(src_file)]
-    for i in xrange(16185):
-        line = lines_image[i]
-        elem = line.split(' ')
-        x_1 = int(anno_[0][i][1])
-        y_1 = int(anno_[0][i][2])
-        x_2 = int(anno_[0][i][3])
-        y_2 = int(anno_[0][i][4])
-        dir_split_ = elem[0].split('/')
-        image_ = Image.open(input_dir + str(elem[0]))
-        crop_image = image_.crop((x_1, y_1, x_2, y_2))
-        crop_image.save(output_dir + dir_split_[1])
-        print i
+# def crop_images(src_file, input_dir, output_dir, crop_file):
+#     cars_ = sio.loadmat(crop_file)
+#     anno_ = cars_['annotations']
+#     lines_image = [line.rstrip('\n') for line in open(src_file)]
+#     for i in xrange(16185):
+#         line = lines_image[i]
+#         elem = line.split(' ')
+#         x_1 = int(anno_[0][i][1])
+#         y_1 = int(anno_[0][i][2])
+#         x_2 = int(anno_[0][i][3])
+#         y_2 = int(anno_[0][i][4])
+#         dir_split_ = elem[0].split('/')
+#         image_ = Image.open(input_dir + str(elem[0]))
+#         crop_image = image_.crop((x_1, y_1, x_2, y_2))
+#         crop_image.save(output_dir + dir_split_[1])
+#         print i
 
-def shuffle_data(mode):
-    print 'shuffle cars dataset ...'
-    if mode == 'test':
-        shuffle_file = open('../../Data/StanfordProducts/stanford_products_test_shuffle.txt', 'w')
-        lines_file = [line.rstrip('\n') for line in open('../../Data/StanfordProducts/stanford_products_test.txt')]
-    else:
-        shuffle_file = open('../../Data/StanfordProducts/stanford_products_train_shuffle.txt', 'w')
-        lines_file = [line.rstrip('\n') for line in open('../../Data/StanfordProducts/stanford_products_train.txt')]
-    num_lines = len(lines_file)
-    random_nums = random.sample(xrange(num_lines), num_lines)
-    for i in random_nums[:num_lines]:
-        shuffle_file.write(lines_file[i] + "\n")
-    shuffle_file.close()
+# def shuffle_data(mode):
+#     print 'shuffle cars dataset ...'
+#     if mode == 'test':
+#         shuffle_file = open('../../Data/StanfordProducts/stanford_products_test_shuffle.txt', 'w')
+#         lines_file = [line.rstrip('\n') for line in open('../../Data/StanfordProducts/stanford_products_test.txt')]
+#     else:
+#         shuffle_file = open('../../Data/StanfordProducts/stanford_products_train_shuffle.txt', 'w')
+#         lines_file = [line.rstrip('\n') for line in open('../../Data/StanfordProducts/stanford_products_train.txt')]
+#     num_lines = len(lines_file)
+#     random_nums = random.sample(xrange(num_lines), num_lines)
+#     for i in random_nums[:num_lines]:
+#         shuffle_file.write(lines_file[i] + "\n")
+#     shuffle_file.close()

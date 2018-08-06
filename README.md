@@ -1,3 +1,10 @@
+# Hard-Aware-Deeply-Cascaded-Embedding_Only_Cars196
+
+Run the code **only for Cars196 dataset**. Good reference for green hand in metric learning.
+Pure bash & c++ code for training and extract features. Feel free to DIY your py script to build your test workflow.
+
+---
+
 # Hard-Aware-Deeply-Cascaded-Embedding [ICCV2017 (spotlight)]
 
 **Congratulations to our work is accepted by ICCV2017 (spotlight).**
@@ -12,7 +19,7 @@
 
 **04/11/2017  Add some tips on how to add new layers to caffe!**
 
-**Note!!!** I found many people do not know how to add new layers to caffe framework. Here is a vivid explainations: First you need to add the "*.hpp *cpp *.cu" to the project. Then you need to edit the caffe.proto. First you need to check the max ID that you have used. Here we will take the [caffe.proto](https://github.com/BVLC/caffe/blob/master/src/caffe/proto/caffe.proto) as an example. You could check that in the line 407 with the **optional WindowDataParameter window_data_param = 129;**. So you check in the lines(1169-1200) to know that the WindowDataParameter contains 13 parameters. Therefore, you need to add this line **optional PairFastLossParameter pair_fast_loss_param = 143;** as 129 + 13 = 142. Besides, you also need to add the the following lines to spercify the parameters of the newly added layers.
+**Note!!!** I found many people do not know how to add new layers to caffe framework. Here is a vivid explainations: First you need to add the "*.hpp *cpp *.cu" to the project. Then you need to edit the caffe.proto. First you need to check the max ID that you have used. Here we will take the [caffe.proto](https://github.com/BVLC/caffe/blob/master/src/caffe/proto/caffe.proto)(2018/08/06) as an example. You could check that in the `Layer type-specific parameters` block, the ID of these params must be unique. In my case I need to add `optional PairFastLossParameter pair_fast_loss_param = 148;` below `optional WindowDataParameter window_data_param = 129;` . Besides, you also need to add the the following lines to spercify the parameters of the newly added layers.
 
 ```
    message PairFastLossParameter {
@@ -54,9 +61,8 @@ If you find this work useful in your research, please consider citing :
 
      
 ## Prerequisites
-1. caffe (python interface)
-2. matplotlib,cPickle,numpy,lmdb
-3. We assumed that you are using Windows (you can rewrite the *.bat to *.sh if you choose Linux or MacOs)
+1. matplotlib,cPickle,numpy,lmdb
+2. We assumed that you are using Windows (you can rewrite the *.bat to *.sh if you choose Linux or MacOs)
 
 ## Datasets & Models 
 1.  Download pretrained GoogLeNet model from [here](https://github.com/BVLC/caffe/tree/master/models/bvlc_googlenet)
@@ -64,34 +70,47 @@ If you find this work useful in your research, please consider citing :
 3.  You should change the path of images in the Training Prototxt.
 
 ## Usage
+
+**Use new tool `extract_features2file`**: 
+Put `extract_features2file.cpp` to caffe `src/caffe/tools` dir and build for a new tool.
+
 **Process Data**: (you should in the folder /src_code/):
+(just generate for `cars196`)
 ```
-   python hdc_process.py -d stanford_products
-   python hdc_process.py -d cub200
-   python hdc_process.py -d cars196
-   python hdc_process.py -d deepfashion
+   python hdc_process.py
 ```
    
-**Training Models**: (currently we only support HDC for your convenience)
+**Training Models**: (you should in the root folder)
 ```
-   python hdc_train.py -d stanford_products -c HDC
-   python hdc_train.py -d cub200 -c HDC
-   python hdc_train.py -d cars196 -c HDC
+   bash train.sh
 ```
    **You could change the image path in the training prototxt to train the models with bounding boxes or not**
    
 **Extract Features**:
  ```
-   python hdc_feature.py -d stanford_products -c HDC
-   python hdc_feature.py -d cub200 -c HDC
-   python hdc_feature.py -d cars196 -c HDC
+   bash extract_features_once.sh
 ```
-**Test Models**:
+**Test Models**: (you should in the folder /src_code/):
 ```
-   python hdc_test.py -d stanford_products -c HDC
-   python hdc_test.py -d cub200 -c HDC
-   python hdc_test.py -d cars196 -c HDC
+   python test_new.py
 ```
+
+**You need to modify the relative path to adjust your environment.**
+
+If you do the things right, you can get the output below (after 4832 times iteration):
+
+```
+$ python test_new.py
+start compute distances ...
+finished compute distances ...
+stanford cars mean recall@ 1 : 0.589718
+stanford cars mean recall@ 2 : 0.708892
+stanford cars mean recall@ 4 : 0.802361
+stanford cars mean recall@ 8 : 0.876153
+stanford cars mean recall@ 16 : 0.929283
+stanford cars mean recall@ 32 : 0.963842
+```
+
 
 **Improve Space**
 

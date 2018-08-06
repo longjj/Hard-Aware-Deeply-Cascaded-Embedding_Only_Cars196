@@ -22,6 +22,7 @@ def compute_distances(query_list, set_list):
     return dists
 
 def compute_distances_self(set_list):
+    # `set_list` is `data_feature_vector`
     print 'start compute distances ...'
     num_set = set_list.shape[0]
     dists = np.zeros((num_set, num_set))
